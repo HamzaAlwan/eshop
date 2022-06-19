@@ -3,6 +3,7 @@
 @import './base/colors.scss';
 @import './base/fonts.scss';
 @import './base/mixins.scss';
+@import './base/configuration.scss';
 
 //Libraries
 @import '~primeicons/primeicons.css';
@@ -17,4 +18,6 @@
 @import './apps/admin/dashboard.scss';
 
 //Libs
+@import './libs/products/products.scss';
+@import './libs/orders/orders.scss';
 @import './libs/users/users.scss';

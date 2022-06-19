@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@env/*": ["environments/*"],
       "@eshop/orders": ["libs/orders/src/index.ts"],
       "@eshop/products": ["libs/products/src/index.ts"],
       "@eshop/ui": ["libs/ui/src/index.ts"],
