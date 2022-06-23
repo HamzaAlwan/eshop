@@ -1,7 +1,7 @@
-const { Order } = require('../models/order');
 const express = require('express');
-const { OrderItem } = require('../models/orderItem');
 const router = express.Router();
+const { Order } = require('../models/order');
+const { OrderItem } = require('../models/orderItem');
 
 router.get(`/`, async (req, res) => {
     const orderList = await Order.find()
