@@ -148,13 +148,13 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get(`/get/count`, async (req, res) => {
-    const productCount = await Product.countDocuments((count) => count);
+    const productsCount = await Product.countDocuments((count) => count);
 
-    if (!productCount) {
+    if (!productsCount) {
         res.status(500).json({ success: false });
     }
     res.send({
-        productCount: productCount,
+        productsCount: productsCount,
     });
 });
 

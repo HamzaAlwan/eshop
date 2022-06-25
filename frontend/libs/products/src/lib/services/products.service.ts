@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { Product } from '../models/product';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductsService {
   apiURLProducts = environment.apiUrl + 'products';
@@ -26,10 +27,19 @@ export class ProductsService {
   }
 
   updateProduct(productData: FormData, productId: string): Observable<Product> {
-    return this.http.put<Product>(`${this.apiURLProducts}/${productId}`, productData);
+    return this.http.put<Product>(
+      `${this.apiURLProducts}/${productId}`,
+      productData
+    );
   }
 
   deleteProduct(productId: string): Observable<any> {
     return this.http.delete<any>(`${this.apiURLProducts}/${productId}`);
+  }
+
+  getProductsCount(): Observable<number> {
+    return this.http
+      .get<number>(`${this.apiURLProducts}/get/count`)
+      .pipe(map((response: any) => response.productsCount));
   }
 }

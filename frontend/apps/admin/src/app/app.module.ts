@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ShellComponent } from './shared/shell/shell.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
@@ -18,6 +18,7 @@ import { UsersFormComponent } from './pages/users/users-form/users-form.componen
 import { OrdersListComponent } from './pages/orders/orders-list/orders-list.component';
 import { OrderDetailsComponent } from './pages/orders/order-details/order-details.component';
 
+import { JwtInterceptor, UsersModule } from '@eshop/users';
 import { CategoriesService } from '@eshop/products';
 
 import { CardModule } from 'primeng/card';
@@ -37,63 +38,6 @@ import { EditorModule } from 'primeng/editor';
 import { TagModule } from 'primeng/tag';
 import { InputMaskModule } from 'primeng/inputmask';
 import { FieldsetModule } from 'primeng/fieldset';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: ShellComponent,
-    children: [
-      {
-        path: 'dashboard',
-        component: DashboardComponent,
-      },
-      {
-        path: 'categories',
-        component: CategoriesListComponent,
-      },
-      {
-        path: 'categories/form',
-        component: CategoriesFormComponent,
-      },
-      {
-        path: 'categories/form/:id',
-        component: CategoriesFormComponent,
-      },
-      {
-        path: 'products',
-        component: ProductsListComponent,
-      },
-      {
-        path: 'products/form',
-        component: ProductsFormComponent,
-      },
-      {
-        path: 'products/form/:id',
-        component: ProductsFormComponent,
-      },
-      {
-        path: 'users',
-        component: UsersListComponent,
-      },
-      {
-        path: 'users/form',
-        component: UsersFormComponent,
-      },
-      {
-        path: 'users/form/:id',
-        component: UsersFormComponent,
-      },
-      {
-        path: 'orders',
-        component: OrdersListComponent
-      },
-      {
-        path: 'orders/:id',
-        component: OrderDetailsComponent
-      }
-    ],
-  },
-];
 
 const UX_MODULE = [
   CardModule,
@@ -135,10 +79,16 @@ const UX_MODULE = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' }),
+    UsersModule,
+    AppRoutingModule,
     ...UX_MODULE,
   ],
-  providers: [CategoriesService, MessageService, ConfirmationService],
+  providers: [
+    CategoriesService,
+    MessageService,
+    ConfirmationService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
