@@ -26,6 +26,12 @@ export class ProductsService {
     return this.http.get<Product>(`${this.apiURLProducts}/${productId}`);
   }
 
+  getFeaturedProducts(count: number): Observable<Product[]> {
+    return this.http.get<Product[]>(
+      `${this.apiURLProducts}/get/featured/${count}`
+    );
+  }
+
   updateProduct(productData: FormData, productId: string): Observable<Product> {
     return this.http.put<Product>(
       `${this.apiURLProducts}/${productId}`,
