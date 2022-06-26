@@ -15,4 +15,5 @@ export class Product {
   numReviews?: number;
   isFeatured?: boolean;
   createdAt?: string;
+  updatedAt?: string;
 }

@@ -2,7 +2,7 @@
   &-wrapper {
     background-color: var(--surface-200);
     border: 1px solid var(--surface-300);
-    border-radius: 15px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,6 +30,6 @@
   .add-to-cart {
     background-color: $primary-color;
     border: 0;
-    border-radius: 15px;
+    border-radius: 20px;
   }
 }
