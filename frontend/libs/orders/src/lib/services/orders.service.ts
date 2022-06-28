@@ -10,6 +10,7 @@ import { environment } from '@env/environment';
 })
 export class OrdersService {
   apiURLOrders = environment.apiUrl + 'orders';
+  apiURLProducts = environment.apiUrl + 'products';
 
   constructor(private http: HttpClient) {}
 

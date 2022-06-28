@@ -9,14 +9,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { NavComponent } from './shared/nav/nav.component';
+import { MessagesComponent } from './shared/messages/messages.component';
 
 import { ProductsModule } from '@eshop/products';
-import { AccordionModule } from 'primeng/accordion';
 import { UiModule } from '@eshop/ui';
+import { OrdersModule } from '@eshop/orders';
 
-const routes: Routes = [
-  { path: '', component: HomePageComponent },
-];
+import { AccordionModule } from 'primeng/accordion';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+
+const routes: Routes = [{ path: '', component: HomePageComponent }];
 
 @NgModule({
   declarations: [
@@ -25,6 +28,7 @@ const routes: Routes = [
     HeaderComponent,
     FooterComponent,
     NavComponent,
+    MessagesComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,10 +36,12 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes),
     UiModule,
+    OrdersModule,
     ProductsModule,
     AccordionModule,
+    ToastModule,
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

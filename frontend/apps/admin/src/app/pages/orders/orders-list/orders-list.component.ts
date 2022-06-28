@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Order, OrdersService } from '@eshop/orders';
+import { Order, OrdersService, ORDER_STATUS } from '@eshop/orders';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ORDER_STATUS } from '../order.constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

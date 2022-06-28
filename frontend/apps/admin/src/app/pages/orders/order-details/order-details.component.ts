@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Order, OrdersService } from '@eshop/orders';
+import { Order, OrdersService, ORDER_STATUS } from '@eshop/orders';
 import { MessageService } from 'primeng/api';
-import { ORDER_STATUS } from '../order.constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -51,6 +50,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
           .subscribe((order) => {
             this.order = order;
             this.selectedStatus = order.status;
+            debugger
           });
       }
     });

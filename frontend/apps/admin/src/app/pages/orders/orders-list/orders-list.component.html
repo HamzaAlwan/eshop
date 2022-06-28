@@ -10,8 +10,8 @@
               <th pSortableColumn="totalPrice">
                 Total Price <p-sortIcon field="totalPrice"></p-sortIcon>
               </th>
-              <th pSortableColumn="dateOrdered">
-                Date Ordered <p-sortIcon field="dateOrdered"></p-sortIcon>
+              <th pSortableColumn="createdAt">
+                Date Ordered <p-sortIcon field="createdAt"></p-sortIcon>
               </th>
               <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
               <th></th>
@@ -21,7 +21,7 @@
             <tr>
               <td>{{ order?.user?.name ? order?.user?.name : 'Name not available' }}</td>
               <td>{{ order.totalPrice }}</td>
-              <td>{{ order.dateOrdered | date: 'short' }}</td>
+              <td>{{ order.createdAt | date: 'short' }}</td>
               <td>
                 <p-tag
                   [value]="orderStatus[order.status].label"

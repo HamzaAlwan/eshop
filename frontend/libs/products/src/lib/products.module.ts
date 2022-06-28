@@ -9,7 +9,7 @@ import { ProductItemComponent } from './components/product-item/product-item.com
 import { ProductsListComponent } from './pages/products-list/products-list.component';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 
-import { OrdersModule } from '@eshop/orders';
+// import { OrdersModule } from '@eshop/orders';
 import { UiModule } from '@eshop/ui';
 
 import { ButtonModule } from 'primeng/button';
@@ -37,7 +37,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    OrdersModule,
+    // OrdersModule,
     RouterModule,
     RouterModule.forChild(routes),
     ButtonModule,
