@@ -15,6 +15,8 @@ import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { ThankYouComponent } from './pages/thank-you/thank-you.component';
 
+import { AuthGuard } from '@eshop/users';
+
 const routes: Routes = [
   {
     path: 'cart',
@@ -22,6 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'checkout',
+    canActivate: [AuthGuard],
     component: CheckoutComponent,
   },
   {
@@ -40,12 +43,11 @@ const routes: Routes = [
     ReactiveFormsModule,
     InputTextModule,
     InputMaskModule,
-    DropdownModule,
+    DropdownModule
   ],
   providers: [],
   declarations: [
     CartIconComponent,
-
     OrderSummaryComponent,
     CartPageComponent,
     CheckoutComponent,

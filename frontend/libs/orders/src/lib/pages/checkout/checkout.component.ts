@@ -1,38 +1,50 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UsersService } from '@eshop/users';
+
 import { Cart } from '../../models/cart';
 import { Order } from '../../models/order';
 import { OrderItem } from '../../models/order-item';
 import { CartService } from '../../services/cart.service';
 import { OrdersService } from '../../services/orders.service';
-import { ORDER_STATUS } from '../../order.constants';
+
+import { StripeService } from 'ngx-stripe';
 
 @Component({
   selector: 'orders-checkout-page',
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private usersService: UsersService,
     private formBuilder: FormBuilder,
     private cartService: CartService,
-    private ordersService: OrdersService
+    private ordersService: OrdersService,
+    private stripeService: StripeService
   ) {}
 
   checkoutFormGroup!: FormGroup;
   isSubmitted = false;
   orderItems: OrderItem[] = [];
-  userId = '609d65943373711346c5e950';
+  userId?: string;
   countries: { id: string; name: string }[] = [];
+  unsubscribe$: Subject<any> = new Subject();
 
   ngOnInit(): void {
     this._initCheckoutForm();
+    this._autoFillUserData();
     this._getCartItems();
     this._getCountries();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next(null);
+    this.unsubscribe$.complete();
   }
 
   private _initCheckoutForm() {
@@ -46,6 +58,25 @@ export class CheckoutComponent implements OnInit {
       apartment: ['', Validators.required],
       street: ['', Validators.required],
     });
+  }
+
+  private _autoFillUserData() {
+    this.usersService
+      .observeCurrentUser()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((user) => {
+        if (user) {
+          this.userId = user.id;
+          this.checkoutForm['name'].setValue(user.name);
+          this.checkoutForm['email'].setValue(user.email);
+          this.checkoutForm['phone'].setValue(user.phone);
+          this.checkoutForm['city'].setValue(user.city);
+          this.checkoutForm['street'].setValue(user.street);
+          this.checkoutForm['country'].setValue(user.country);
+          this.checkoutForm['zip'].setValue(user.zip);
+          this.checkoutForm['apartment'].setValue(user.apartment);
+        }
+      });
   }
 
   private _getCartItems() {
@@ -68,9 +99,7 @@ export class CheckoutComponent implements OnInit {
 
   placeOrder() {
     this.isSubmitted = true;
-    if (this.checkoutFormGroup?.invalid) {
-      return;
-    }
+    if (this.checkoutFormGroup?.invalid) return;
 
     const order: Order = {
       orderItems: this.orderItems,
@@ -84,16 +113,18 @@ export class CheckoutComponent implements OnInit {
       user: this.userId,
     };
 
-    this.ordersService.createOrder(order).subscribe(
-      () => {
-        //redirect to thank you page // payment
-        this.cartService.emptyCart();
-        this.router.navigate(['/success']);
+    this.ordersService.cacheOrderData(order);
+
+    this.ordersService.createCheckoutSession(this.orderItems).subscribe({
+      next: (session: any) => {
+        this.stripeService.redirectToCheckout({
+          sessionId: session.id,
+        });
       },
-      () => {
-        //display some message to user
-      }
-    );
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 
   get checkoutForm() {

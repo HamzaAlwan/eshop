@@ -50,7 +50,6 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
           .subscribe((order) => {
             this.order = order;
             this.selectedStatus = order.status;
-            debugger
           });
       }
     });
