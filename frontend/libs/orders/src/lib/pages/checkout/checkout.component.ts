@@ -117,9 +117,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     this.ordersService.createCheckoutSession(this.orderItems).subscribe({
       next: (session: any) => {
-        this.stripeService.redirectToCheckout({
-          sessionId: session.id,
-        });
+        console.error(session);
+        this.stripeService
+          .redirectToCheckout({
+            sessionId: session.id,
+          })
+          .subscribe({ error: console.error });
       },
       error: (err) => {
         console.error(err);
